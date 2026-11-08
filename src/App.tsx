@@ -8,7 +8,8 @@ import { ModelLink } from './components/ModelLink';
 import { PlanSheet } from './components/PlanSheet';
 import { QuoteForm } from './components/QuoteForm';
 import { WeightPanel } from './components/WeightPanel';
-import { LISTINGS } from './data/listings';
+import { LISTINGS, LISTINGS_FETCHED_AT } from './data/listings';
+import { aihuishouSameSearch, jdSameSearch } from './data/links';
 import { applyFilters } from './filters';
 import { formatCny, formatStorage, specLine } from './format';
 import {
@@ -23,6 +24,20 @@ import { useCompare } from './useCompare';
 import type { Listing } from './types';
 
 const PRESETS = [6000, 8000, 12000, 16000, 20000];
+
+function BuyLinks({ listing, tone }: { listing: Listing; tone: 'look' | 'go' }) {
+  return (
+    <div className="link-row">
+      <ModelLink listing={listing} tone={tone} />
+      <a className="go-link go-link-line" href={jdSameSearch(listing)} target="_blank" rel="noreferrer noopener">
+        去京东
+      </a>
+      <a className="go-link go-link-line" href={aihuishouSameSearch(listing)} target="_blank" rel="noreferrer noopener">
+        去爱回收
+      </a>
+    </div>
+  );
+}
 
 export default function App() {
   const state = useCompare();
@@ -147,7 +162,9 @@ export default function App() {
       <main id="result">
         <section>
           <h2>预算 {asked.budget.toLocaleString('zh-CN')} 元里的最优方案</h2>
-          <p className="lead">只看价格不超过预算的挂牌，再按成新度和价格打分，给出 1～3 条。</p>
+          <p className="lead">
+            标价来自苹果官网翻新，抓取于 {LISTINGS_FETCHED_AT.slice(0, 16).replace('T', ' ')} UTC。直达打开这台机器的商品页。去京东、去爱回收是同款搜索。
+          </p>
           {picks.length === 0 ? (
             <p className="empty">这个预算下没有挂牌。把预算调高一点再点推荐。</p>
           ) : (
@@ -177,7 +194,7 @@ export default function App() {
                     </div>
                   </dl>
                   <p className="why">{valueSentence(item, asked.budget)}</p>
-                  <ModelLink listing={item.listing} />
+                  <BuyLinks listing={item.listing} tone="look" />
                 </li>
               ))}
             </ol>
@@ -195,7 +212,7 @@ export default function App() {
                 </strong>
               </p>
               <p className="why">{advice.reason}</p>
-              <h3>符合这档配置、且不超过预算的挂牌</h3>
+              <h3>符合这档配置、且不超过预算的在售商品</h3>
               <ul className="match-list">
                 {adviceListings.map((item) => (
                   <li key={item.id}>
@@ -209,7 +226,7 @@ export default function App() {
                       </span>
                     </div>
                     <ChannelBadge id={item.channel} />
-                    <ModelLink listing={item} tone="go" />
+                    <BuyLinks listing={item} tone="go" />
                   </li>
                 ))}
               </ul>
@@ -262,7 +279,9 @@ export default function App() {
         />
       </details>
 
-      <p className="disclaimer">价格和卖家是讲解用的代表价。按钮会打开京东、闲鱼、转转、爱回收或抖音上该机型的搜索页。</p>
+      <p className="disclaimer">
+        价格和「直达」来自苹果官网翻新商品页。京东、爱回收从这里抓不到稳定标价，所以那两个按钮只打开同款搜索，不写假价格。
+      </p>
 
       <DetailDrawer
         item={state.selected}

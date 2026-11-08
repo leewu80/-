@@ -1,7 +1,7 @@
 import type { Chip, Filters, Listing, Series } from './types';
 
-export const SERIES_OPTIONS: Series[] = ['Air', 'Pro'];
-export const CHIP_OPTIONS: Chip[] = ['M1', 'M2', 'M3', 'M4', 'Intel'];
+export const SERIES_OPTIONS: Series[] = ['Air', 'Pro', 'Neo'];
+export const CHIP_OPTIONS: Chip[] = ['M1', 'M2', 'M3', 'M4', 'M5', 'A18', 'Intel'];
 
 const GPU_ORDER = ['7 核 GPU', '8 核 GPU', '10 核 GPU', '16 核 GPU', '18 核 GPU', 'Intel Iris Plus'];
 

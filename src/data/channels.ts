@@ -10,9 +10,9 @@ export const CHANNELS: ChannelMeta[] = [
   },
   {
     id: 'web',
-    name: '全网二手',
-    shortName: '全网',
-    description: '转转、爱回收等归入全网',
+    name: '爱回收',
+    shortName: '爱回收',
+    description: '爱回收验机的二手电脑',
   },
   {
     id: 'live',
@@ -27,10 +27,10 @@ export const CHANNELS: ChannelMeta[] = [
     description: '闲鱼个人卖家的同配置挂牌',
   },
   {
-    id: 'hqb',
-    name: '华强北市场报价',
-    shortName: '华强北',
-    description: '赛格、明通等档口的当面报价',
+    id: 'apple',
+    name: '苹果官方翻新',
+    shortName: '苹果官翻',
+    description: 'apple.com.cn 此刻在售的翻新 Mac，价格和链接都来自商品页',
   },
 ];
 

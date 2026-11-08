@@ -1,4 +1,7 @@
-import { buildCatalog } from './catalog';
+import type { Listing } from '../types';
+import { LISTINGS_FETCHED_AT, LISTINGS_SOURCE, LIVE_LISTINGS } from './live-listings';
 
-// 演示挂牌由机型表生成。卖家和价格是讲解用的代表价，链接会打开对应平台上这一档机型的搜索页。
-export const LISTINGS = buildCatalog();
+export { LISTINGS_FETCHED_AT, LISTINGS_SOURCE };
+
+/** 苹果官网翻新页抓到的在售机器。每条 linkUrl 是对应商品页。 */
+export const LISTINGS: Listing[] = LIVE_LISTINGS.map((item) => ({ ...item }));

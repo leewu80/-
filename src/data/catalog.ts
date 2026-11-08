@@ -113,21 +113,20 @@ interface ChannelOffer {
 }
 
 function offersFor(index: number): ChannelOffer[] {
-  const webSeller = index % 2 === 0 ? '爱回收严选' : '转转优品';
   return [
     {
       channel: 'jd',
       condition: '官翻',
       factor: 1.08,
       seller: '京东拍拍自营',
-      note: '平台官翻，适合想要售后的人。',
+      note: '京东二手官翻，平台售后更省心。',
     },
     {
       channel: 'web',
       condition: '95新',
       factor: 0.98,
-      seller: webSeller,
-      note: '平台验过机，价格贴近同配置行情。',
+      seller: '爱回收严选',
+      note: '爱回收验过机，价格贴近同配置行情。',
     },
     {
       channel: 'live',
@@ -142,13 +141,6 @@ function offersFor(index: number): ChannelOffer[] {
       factor: 0.86,
       seller: '闲鱼·个人良品',
       note: '个人闲置，价格低，建议当面先验机。',
-    },
-    {
-      channel: 'hqb',
-      condition: '9成新',
-      factor: 0.92,
-      seller: index % 3 === 0 ? '华强北·赛格老周' : index % 3 === 1 ? '华强北·明通阿豪' : '华强北·远望数码',
-      note: '档口现金价，可当面看机。',
     },
   ];
 }

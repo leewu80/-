@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { CHANNELS } from '../data/channels';
 import { LISTINGS } from '../data/listings';
 import {
   CONDITION_RANK,
@@ -7,42 +6,21 @@ import {
   buildSpecGroups,
   priceScoreWithinGroup,
   scoreListings,
-  specKey,
 } from './score';
+import type { Listing } from '../types';
 
-assert.ok(LISTINGS.length >= 24, '演示样本至少 24 条');
+assert.ok(LISTINGS.length >= 24, '在售清单至少 24 条');
+assert.ok(LISTINGS.some((item) => item.chip === 'M5'), '应包含 M5');
+assert.equal(LISTINGS.some((item) => item.seller.includes('华强北')), false);
 
 const ids = new Set(LISTINGS.map((item) => item.id));
 assert.equal(ids.size, LISTINGS.length, '样本编号不重复');
 
-const channels = new Set(LISTINGS.map((item) => item.channel));
-assert.equal(channels.size, CHANNELS.length);
-for (const channel of CHANNELS) {
-  assert.ok(channels.has(channel.id), channel.name);
-}
-
-const seen = new Set<string>();
 for (const item of LISTINGS) {
-  assert.match(item.linkUrl ?? '', /^https:\/\//, `${item.id} 应有可打开的 https 机型链接`);
-  assert.equal(item.linkUrl?.includes(encodeURIComponent(item.model)), true, `${item.id} 链接应带上机型`);
+  assert.match(item.linkUrl ?? '', /^https:\/\/www\.apple\.com\.cn\/shop\/product\//, `${item.id} 应是苹果商品页`);
   assert.equal(/https?:\/\//.test(`${item.note} ${item.seller}`), false);
-  const token = `${specKey(item)}::${item.channel}`;
-  assert.equal(seen.has(token), false, `同配置同渠道重复：${token}`);
-  seen.add(token);
+  assert.ok(item.price > 0);
 }
-
-const coverage = new Map<string, Set<string>>();
-for (const item of LISTINGS) {
-  const key = specKey(item);
-  const bucket = coverage.get(key) ?? new Set<string>();
-  bucket.add(item.channel);
-  coverage.set(key, bucket);
-}
-assert.ok(
-  [...coverage.values()].some((bucket) => bucket.size === CHANNELS.length),
-  '至少有一组配置覆盖全部渠道',
-);
-assert.ok(LISTINGS.some((item) => item.channel === 'hqb'), '应包含华强北市场报价');
 
 for (let index = 1; index < CONDITION_RANK.length; index += 1) {
   const higher = CONDITION_RANK[index - 1];
@@ -66,10 +44,25 @@ assert.match(balanced[0].score.reasons.join('\n'), /成新度/);
 assert.match(balanced[0].score.reasons.join('\n'), /综合分/);
 assert.match(balanced[0].score.reasons.join('\n'), /均价/);
 
-const proGroup = LISTINGS.filter(
-  (item) => item.model === 'MacBook Pro 14 英寸' && item.chipDetail === 'M3 Pro' && item.storageGb === 512,
-);
-assert.ok(proGroup.length >= 4);
+const fixture = (partial: Pick<Listing, 'id' | 'condition' | 'price' | 'channel'>): Listing => ({
+  series: 'Pro',
+  model: 'MacBook Pro 14 英寸',
+  year: 2023,
+  chip: 'M3',
+  chipDetail: 'M3 Pro',
+  memoryGb: 18,
+  storageGb: 512,
+  gpu: '18 核 GPU',
+  seller: '测试',
+  note: '测试',
+  ...partial,
+});
+const proGroup = [
+  fixture({ id: 'a', condition: '官翻', price: 13200, channel: 'jd' }),
+  fixture({ id: 'b', condition: '99新', price: 12800, channel: 'live' }),
+  fixture({ id: 'c', condition: '95新', price: 12000, channel: 'web' }),
+  fixture({ id: 'd', condition: '8成新', price: 9999, channel: 'xianyu' }),
+];
 const priceHeavy = scoreListings(proGroup, { condition: 30, price: 70 });
 const conditionHeavy = scoreListings(proGroup, { condition: 70, price: 30 });
 assert.equal(priceHeavy[0]?.listing.condition, '8成新');

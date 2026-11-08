@@ -4,7 +4,7 @@ import type { ChannelId, Chip, Condition, Listing, Series } from '../types';
 const SERIES: readonly Series[] = ['Air', 'Pro'];
 const CHIPS: readonly Chip[] = ['M1', 'M2', 'M3', 'M4', 'Intel'];
 const CONDITIONS: readonly Condition[] = ['官翻', '99新', '95新', '9成新', '8成新', '7成新'];
-const CHANNEL_IDS: readonly ChannelId[] = ['jd', 'web', 'live', 'xianyu', 'hqb'];
+const CHANNEL_IDS: readonly ChannelId[] = ['jd', 'web', 'live', 'xianyu', 'apple'];
 
 function fail(index: number, message: string): never {
   throw new Error(`第 ${index + 1} 条${message}`);

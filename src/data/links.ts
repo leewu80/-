@@ -22,7 +22,7 @@ export function modelQuery(spec: LinkSpec): string {
  * 各渠道的公开检索地址。已核对能打开，并且查询词就是这台机型。
  * 京东检索在机房网络里可能先出现验证页，浏览器里会进入该机型结果。
  */
-export function modelLink(channel: ChannelId, spec: LinkSpec, seller: string): string {
+export function modelLink(channel: ChannelId, spec: LinkSpec, _seller: string): string {
   const query = modelQuery(spec);
   const encoded = encodeURIComponent(query);
   switch (channel) {
@@ -31,14 +31,11 @@ export function modelLink(channel: ChannelId, spec: LinkSpec, seller: string): s
     case 'xianyu':
       return `https://www.goofish.com/search?q=${encoded}`;
     case 'web':
-      if (seller.includes('转转')) {
-        return `https://m.zhuanzhuan.com/u/b2c_list_page/search?keyword=${encoded}`;
-      }
-      return `https://www.aihuishou.com/search?keyword=${encoded}`;
+      return `https://www.aihuishou.com/search?keyword=${encodeURIComponent(`二手 ${query}`)}`;
     case 'live':
       return `https://www.douyin.com/search/${encodeURIComponent(`${query} 苹果笔记本`)}`;
-    case 'hqb':
-      return `https://www.goofish.com/search?q=${encodeURIComponent(`华强北 ${query}`)}`;
+    case 'apple':
+      return 'https://www.apple.com.cn/shop/refurbished/mac';
     default: {
       const unreachable: never = channel;
       return unreachable;
@@ -51,18 +48,28 @@ export function linkLabel(channel: ChannelId): string {
     case 'jd':
       return '打开京东该机型';
     case 'web':
-      return '打开全网该机型';
+      return '打开爱回收该机型';
     case 'live':
       return '打开主播该机型';
     case 'xianyu':
       return '打开闲鱼该机型';
-    case 'hqb':
-      return '打开华强北该机型';
+    case 'apple':
+      return '打开苹果商品页';
     default: {
       const unreachable: never = channel;
       return unreachable;
     }
   }
+}
+
+/** 京东搜索同款二手。价格以京东页面为准，这里不编。 */
+export function jdSameSearch(spec: LinkSpec): string {
+  return `https://search.jd.com/Search?enc=utf-8&keyword=${encodeURIComponent(`二手 ${modelQuery(spec)}`)}`;
+}
+
+/** 爱回收搜索同款。价格以爱回收页面为准，这里不编。 */
+export function aihuishouSameSearch(spec: LinkSpec): string {
+  return `https://www.aihuishou.com/search?keyword=${encodeURIComponent(`二手 ${modelQuery(spec)}`)}`;
 }
 
 export function listingLink(listing: Listing): string {

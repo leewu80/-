@@ -1,14 +1,14 @@
-/** 机型系列 */
-export type Series = 'Air' | 'Pro';
+/** 机型系列。Neo 是 2026 年的入门 MacBook。 */
+export type Series = 'Air' | 'Pro' | 'Neo';
 
-/** 芯片代际，Intel 作为可选项保留 */
-export type Chip = 'M1' | 'M2' | 'M3' | 'M4' | 'Intel';
+/** 芯片代际。A18 用于 MacBook Neo。 */
+export type Chip = 'M1' | 'M2' | 'M3' | 'M4' | 'M5' | 'A18' | 'Intel';
 
 /** 成新度，顺序由高到低见打分模块 */
 export type Condition = '官翻' | '99新' | '95新' | '9成新' | '8成新' | '7成新';
 
-/** 五类比价渠道，华强北为档口市场报价 */
-export type ChannelId = 'jd' | 'web' | 'live' | 'xianyu' | 'hqb';
+/** 比价渠道。apple 是苹果官网翻新的真实在售。 */
+export type ChannelId = 'jd' | 'web' | 'live' | 'xianyu' | 'apple';
 
 export interface ChannelMeta {
   id: ChannelId;

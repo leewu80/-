@@ -27,10 +27,10 @@ export function Header({
           择
         </span>
         <div>
-          <p className="eyebrow">客户演示 · 五渠道同屏</p>
+          <p className="eyebrow">客户演示</p>
           <h1>果择</h1>
           <p className="tagline">
-            二手 Apple 笔记本多端比价。按成新度和金额，从京东拍拍、全网、主播挂价、闲鱼和华强北里挑出更合适的几台。
+            二手 Apple 笔记本多端比价。推荐优先给京东二手和爱回收。
           </p>
         </div>
       </div>

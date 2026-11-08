@@ -4,7 +4,7 @@
 
 1. 填预算，用途可以不选。
 2. 点「推荐」。
-3. 点「去看看」或「直达」，到京东、闲鱼、转转、爱回收或抖音里搜这台机器。
+3. 点「直达」打开苹果官网这台翻新机的商品页。旁边的「去京东」「去爱回收」是同款搜索。
 
 打开页面后会先按 8000 元给出示例。也可以直接点 6000、12000 这些预算。
 
@@ -37,21 +37,27 @@ npm run preview # 预览打包结果
 
 ## 页面上有什么
 
-- 预算以内的 1～3 条方案：机型全称、芯片、内存、存储、显卡、成新度、价格、渠道，以及一句为什么值。
-- 一档建议配置，例如该买 M 几、多少 GB 内存、多少 GB 存储，并列出符合这档、且不超过预算的挂牌。
-- 样本覆盖 MacBook Air 13/15（M1 到 M4；15 英寸从 M2 起）和 MacBook Pro 14/16（M1 Pro/Max 到 M4 Pro/Max）的常见内存和存储。五个渠道都有代表价。
+- 预算以内的 1～3 条方案。价格和「直达」来自苹果官网翻新正在卖的商品，包含 M5。
+- 一档建议配置，并列出不超过预算的在售商品。
+- 「去京东」「去爱回收」打开同款搜索。这两个平台抓不到稳定标价，页面上不写假价格。
 
-价格和卖家是讲解用的代表价。链接是各平台带机型关键词的搜索页，点开就能搜到这一档，不是某一件永远有效的单品页。
+更新在售清单：
 
-## 五个渠道
+```bash
+npm run refresh-data
+```
+
+它会重新请求 `https://www.apple.com.cn/shop/refurbished/mac`，写入 `src/data/live-listings.ts`。
+
+## 渠道
+
+首页标价来自 `apple`（苹果官方翻新）。京东和爱回收只作为同款搜索入口。
 
 | 标识 | 渠道 |
 | --- | --- |
-| `jd` | 京东二手（拍拍） |
-| `web` | 全网二手（转转、爱回收） |
-| `live` | 科技数码苹果电脑主播挂价 |
-| `xianyu` | 闲鱼同款 |
-| `hqb` | 华强北市场报价 |
+| `apple` | 苹果官网翻新，有真实价格和商品页 |
+| `jd` | 京东二手搜索 |
+| `web` | 爱回收搜索 |
 
 ## 打分
 
@@ -64,9 +70,9 @@ npm run preview # 预览打包结果
 ## 主要路径
 
 ```text
-src/data/catalog.ts      机型表，生成五个渠道的代表价和搜索链接
-src/data/listings.ts     演示挂牌
-src/data/links.ts        京东、闲鱼、转转、爱回收、抖音的搜索地址
+src/data/live-listings.ts  苹果官网翻新的在售清单
+scripts/fetch-apple-refurb.py  重新抓取上面这份清单
+src/data/links.ts        商品页、京东搜索、爱回收搜索
 src/recommend.ts         预算过滤、建议配置、1～3 条推荐
 src/scoring/score.ts     成新分、金额分、综合分
 src/App.tsx              首页：预算、推荐、建议配置
@@ -77,6 +83,6 @@ src/App.tsx              首页：预算、推荐、建议配置
 1. 让接口 `GET {VITE_LISTING_API}/listings` 返回 `Listing` 数组，字段见 `src/types.ts`。
 2. 复制 `.env.example` 为 `.env.local`，写上 `VITE_LISTING_API`。
 3. `src/data/source.ts` 的 `loadListings` 会改走这个地址。校验失败时退回内置样本。
-4. 渠道用 `jd` / `web` / `live` / `xianyu` / `hqb`。
+4. 渠道用 `apple` / `jd` / `web` / `live` / `xianyu`。`apple` 的 `linkUrl` 必须是商品页。
 5. `linkUrl` 填能打开的搜索页或商品页。
 6. 打分继续放在 `src/scoring/score.ts`。
