@@ -6,13 +6,15 @@ import type { ScoredListing } from '../types';
 
 interface RecommendationPanelProps {
   items: ScoredListing[];
+  planIds: string[];
   onCompare: (specKey: string) => void;
   onOpen: (id: string) => void;
+  onTogglePlan: (id: string) => void;
 }
 
 const RANK_LABEL = ['最优', '次选', '备选'];
 
-export function RecommendationPanel({ items, onCompare, onOpen }: RecommendationPanelProps) {
+export function RecommendationPanel({ items, planIds, onCompare, onOpen, onTogglePlan }: RecommendationPanelProps) {
   return (
     <section id="recommend" className="section">
       <div className="section-head">
@@ -53,6 +55,9 @@ export function RecommendationPanel({ items, onCompare, onOpen }: Recommendation
                     </button>
                     <button type="button" className="ghost" onClick={() => onOpen(item.listing.id)}>
                       看明细
+                    </button>
+                    <button type="button" className="ghost" onClick={() => onTogglePlan(item.listing.id)}>
+                      {planIds.includes(item.listing.id) ? '移出方案' : '纳入方案'}
                     </button>
                   </div>
                 </footer>

@@ -1,6 +1,6 @@
 import type { ChannelId, ChannelMeta } from '../types';
 
-/** 四类渠道固定顺序，对比区始终按这个顺序排开。 */
+/** 渠道固定顺序，对比区始终按这个顺序排开。 */
 export const CHANNELS: ChannelMeta[] = [
   {
     id: 'jd',
@@ -25,6 +25,12 @@ export const CHANNELS: ChannelMeta[] = [
     name: '闲鱼同款',
     shortName: '闲鱼',
     description: '闲鱼个人卖家的同配置挂牌',
+  },
+  {
+    id: 'hqb',
+    name: '华强北市场报价',
+    shortName: '华强北',
+    description: '赛格、明通等档口的当面报价',
   },
 ];
 

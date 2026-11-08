@@ -66,6 +66,7 @@ export function ListingTable({ items, sortKey, selectedId, onSort, onOpen }: Lis
                   <span className="cell-model">
                     <strong>
                       {item.listing.model} {item.listing.year}
+                      {item.listing.origin === 'quote' ? <em className="origin-tag">本场</em> : null}
                     </strong>
                     <small>{specLine(item.listing)}</small>
                   </span>

@@ -37,7 +37,11 @@ for (const item of LISTINGS) {
   bucket.add(item.channel);
   coverage.set(key, bucket);
 }
-assert.ok([...coverage.values()].some((bucket) => bucket.size === 4), '至少有一组配置覆盖四个渠道');
+assert.ok(
+  [...coverage.values()].some((bucket) => bucket.size === CHANNELS.length),
+  '至少有一组配置覆盖全部渠道',
+);
+assert.ok(LISTINGS.some((item) => item.channel === 'hqb'), '应包含华强北市场报价');
 
 for (let index = 1; index < CONDITION_RANK.length; index += 1) {
   const higher = CONDITION_RANK[index - 1];

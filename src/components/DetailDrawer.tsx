@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { channelOf } from '../data/channels';
 import { ReasonList } from './ReasonList';
 import { ScoreRing } from './ScoreRing';
@@ -7,15 +6,13 @@ import type { ScoredListing } from '../types';
 
 interface DetailDrawerProps {
   item: ScoredListing | null;
+  inPlan: boolean;
   onClose: () => void;
+  onTogglePlan: (id: string) => void;
+  onRemoveQuote: (id: string) => void;
 }
 
-export function DetailDrawer({ item, onClose }: DetailDrawerProps) {
-  useEffect(() => {
-    document.body.classList.toggle('drawer-open', item !== null);
-    return () => document.body.classList.remove('drawer-open');
-  }, [item]);
-
+export function DetailDrawer({ item, inPlan, onClose, onTogglePlan, onRemoveQuote }: DetailDrawerProps) {
   if (!item) {
     return null;
   }
@@ -41,6 +38,17 @@ export function DetailDrawer({ item, onClose }: DetailDrawerProps) {
         </h2>
         <p className="spec">{specLine(listing)}</p>
         <p className="price price-lg">{formatCny(listing.price)}</p>
+        {listing.origin === 'quote' ? <p className="origin-tag">本场录入</p> : null}
+        <div className="detail-actions">
+          <button type="button" className="primary" onClick={() => onTogglePlan(listing.id)}>
+            {inPlan ? '移出方案' : '纳入方案'}
+          </button>
+          {listing.origin === 'quote' ? (
+            <button type="button" className="ghost" onClick={() => onRemoveQuote(listing.id)}>
+              删除本场报价
+            </button>
+          ) : null}
+        </div>
         <dl className="detail-grid">
           <div>
             <dt>机型</dt>

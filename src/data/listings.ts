@@ -218,6 +218,14 @@ export const LISTINGS: Listing[] = [
       seller: '闲鱼·深圳小陈',
       note: '个人自用，键盘轻微打油，无发票。',
     },
+    {
+      id: 'air13-m3-hqb',
+      channel: 'hqb',
+      condition: '9成新',
+      price: 6780,
+      seller: '华强北·赛格老周',
+      note: '档口当面验机，键盘有轻微油光，无票，价格可小刀。',
+    },
   ]),
   ...offers(AIR13_M2, [
     {
@@ -252,6 +260,14 @@ export const LISTINGS: Listing[] = [
       seller: '闲鱼·成都阿美',
       note: '自用转出，循环 120 次，配件齐全。',
     },
+    {
+      id: 'air13-m2-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 5520,
+      seller: '华强北·明通阿豪',
+      note: '档口现货，电池循环约 90 次，支持当场开机。',
+    },
   ]),
   ...offers(AIR15_M3, [
     {
@@ -277,6 +293,14 @@ export const LISTINGS: Listing[] = [
       price: 9100,
       seller: '主播·Mac实验室',
       note: '主播展示机，循环次数低，报价含运费。',
+    },
+    {
+      id: 'air15-m3-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 8600,
+      seller: '华强北·远望数码',
+      note: '成色干净，报价接近全网，适合当面和爱回收那台比。',
     },
   ]),
   ...offers(PRO14_M3PRO, [
@@ -312,6 +336,14 @@ export const LISTINGS: Listing[] = [
       seller: '闲鱼·杭州阿林',
       note: '使用约两年，A 面有划痕，价格明显更低。',
     },
+    {
+      id: 'pro14-m3pro-hqb',
+      channel: 'hqb',
+      condition: '9成新',
+      price: 10900,
+      seller: '华强北·都会二楼',
+      note: '使用痕迹能看到，可现场跑分，无发票。',
+    },
   ]),
   ...offers(PRO14_M4, [
     {
@@ -338,6 +370,14 @@ export const LISTINGS: Listing[] = [
       seller: '闲鱼·上海豆豆',
       note: '可同城自提或邮寄，电池循环 80 次。',
     },
+    {
+      id: 'pro14-m4-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 11280,
+      seller: '华强北·新亚洲阿凯',
+      note: '同配置现金价，箱说不全，支持当面验机。',
+    },
   ]),
   ...offers(PRO16_M3PRO, [
     {
@@ -363,6 +403,14 @@ export const LISTINGS: Listing[] = [
       price: 15600,
       seller: '主播·苹果管家阿凯',
       note: '官翻渠道挂价，适合更看重成色的客户。',
+    },
+    {
+      id: 'pro16-m3pro-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 13900,
+      seller: '华强北·赛格老周',
+      note: '16 英寸现货，电池循环约 180 次，可当场拷机。',
     },
   ]),
   ...offers(AIR13_M1, [
@@ -398,6 +446,14 @@ export const LISTINGS: Listing[] = [
       seller: '主播·极客小林',
       note: '外壳有磕碰，适合预算优先、能接受旧成色。',
     },
+    {
+      id: 'air13-m1-hqb',
+      channel: 'hqb',
+      condition: '8成新',
+      price: 3150,
+      seller: '华强北·明通阿豪',
+      note: '入门备用机，外壳有磕碰，功能正常。',
+    },
   ]),
   ...offers(PRO13_INTEL, [
     {
@@ -423,6 +479,14 @@ export const LISTINGS: Listing[] = [
       price: 2799,
       seller: '闲鱼·广州阿强',
       note: '成色较低，风扇有积灰，价格压得很低。',
+    },
+    {
+      id: 'pro13-intel-hqb',
+      channel: 'hqb',
+      condition: '8成新',
+      price: 2990,
+      seller: '华强北·远望数码',
+      note: '老款接口机，风扇已清灰，适合还要跑旧软件的客户。',
     },
   ]),
   ...offers(PRO14_M2PRO, [
@@ -458,6 +522,14 @@ export const LISTINGS: Listing[] = [
       seller: '京东拍拍自营',
       note: '官翻质保，是这一档里更稳妥的成色选项。',
     },
+    {
+      id: 'pro14-m2pro-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 9900,
+      seller: '华强北·都会二楼',
+      note: '档口报价含原装充电器，外观有细纹。',
+    },
   ]),
   ...offers(AIR13_M4, [
     {
@@ -483,6 +555,14 @@ export const LISTINGS: Listing[] = [
       price: 8350,
       seller: '转转优品',
       note: '转转优品，价格低于同配置官翻一截。',
+    },
+    {
+      id: 'air13-m4-hqb',
+      channel: 'hqb',
+      condition: '99新',
+      price: 8800,
+      seller: '华强北·新亚洲阿凯',
+      note: '机身较新，档口价高于转转优品，适合当面看循环次数。',
     },
   ]),
   ...offers(PRO14_M3PRO_1T, [
@@ -510,6 +590,14 @@ export const LISTINGS: Listing[] = [
       seller: '爱回收',
       note: '爱回收在售，存储比 512GB 那一档更大。',
     },
+    {
+      id: 'pro14-m3pro-1t-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 12480,
+      seller: '华强北·赛格老周',
+      note: '1TB 现货，可当面验机，箱说不一定齐。',
+    },
   ]),
   ...offers(AIR15_M2, [
     {
@@ -535,6 +623,14 @@ export const LISTINGS: Listing[] = [
       price: 7999,
       seller: '京东拍拍',
       note: '平台在售，成色接近全新。',
+    },
+    {
+      id: 'air15-m2-hqb',
+      channel: 'hqb',
+      condition: '9成新',
+      price: 6650,
+      seller: '华强北·明通阿豪',
+      note: '大屏 Air 档口货，边框有磨损。',
     },
   ]),
   ...offers(PRO14_M4PRO, [
@@ -569,6 +665,14 @@ export const LISTINGS: Listing[] = [
       price: 14990,
       seller: '闲鱼·北京阿棠',
       note: '个人高配转出，成色 9 成，这一档里价格最低。',
+    },
+    {
+      id: 'pro14-m4pro-hqb',
+      channel: 'hqb',
+      condition: '95新',
+      price: 15200,
+      seller: '华强北·远望数码',
+      note: '高配创作本，无票，支持当场测试接口和外放。',
     },
   ]),
 ];

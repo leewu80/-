@@ -18,7 +18,9 @@ export function ComparisonBoard({ groups, active, onSelect, onOpen }: Comparison
           <p className="eyebrow">多端并排</p>
           <h2>同配置跨渠道</h2>
         </div>
-        <p className="hint">四列固定为京东拍拍、全网、主播挂价、闲鱼。空列表示当前筛选下这一家没有同款。</p>
+        <p className="hint">
+          对比列固定为{CHANNELS.map((channel) => channel.shortName).join('、')}。空列表示当前筛选下这一家没有同款。
+        </p>
       </div>
       {groups.length === 0 || !active ? (
         <p className="empty">没有可对比的配置。</p>
@@ -72,7 +74,10 @@ export function ComparisonBoard({ groups, active, onSelect, onOpen }: Comparison
                         return (
                           <article key={item.listing.id} className={cx('offer', best && 'offer-best')}>
                             {best ? <span className="ribbon">本组最优</span> : null}
-                            <p className="cond-pill">{item.listing.condition}</p>
+                            <p className="cond-pill">
+                              {item.listing.condition}
+                              {item.listing.origin === 'quote' ? ' · 本场' : ''}
+                            </p>
                             <p className="price">{formatCny(item.listing.price)}</p>
                             <p className="seller">{item.listing.seller}</p>
                             <p className="offer-score">综合 {formatScore(item.score.total)}</p>

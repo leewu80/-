@@ -7,8 +7,8 @@ export type Chip = 'M1' | 'M2' | 'M3' | 'M4' | 'Intel';
 /** 成新度，顺序由高到低见打分模块 */
 export type Condition = '官翻' | '99新' | '95新' | '9成新' | '8成新' | '7成新';
 
-/** 四类比价渠道 */
-export type ChannelId = 'jd' | 'web' | 'live' | 'xianyu';
+/** 五类比价渠道，华强北为档口市场报价 */
+export type ChannelId = 'jd' | 'web' | 'live' | 'xianyu' | 'hqb';
 
 export interface ChannelMeta {
   id: ChannelId;
@@ -34,6 +34,8 @@ export interface Listing {
   seller: string;
   note: string;
   linkUrl?: string;
+  /** sample 为内置演示；quote 为本场录入并存在这台浏览器里 */
+  origin?: 'sample' | 'quote';
 }
 
 export interface ScoreWeights {
