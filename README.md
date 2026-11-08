@@ -4,9 +4,17 @@
 
 界面是中文。内置卖家、价格、备注是虚构样本。当面拿到的真实报价可以用「录入报价」写进这台浏览器，和样本走同一套筛选、对比和打分。纳入最多 3 条后，可以打开「客户方案」打印。
 
-## 启动
+## 直接打开
 
-需要 Node.js 20 或以上。
+当前可打开的地址：
+
+https://opposition-howto-logical-output.trycloudflare.com/
+
+不要打开自己电脑上的 `localhost:5173`，那边没有这个服务，浏览器会显示「无法访问此网站 / ERR_CONNECTION_REFUSED」。
+
+## 在自己电脑上启动
+
+需要 Node.js 20 或以上。只有在你自己的电脑里执行下面的命令之后，`localhost:5173` 才能打开。
 
 ```bash
 npm install
