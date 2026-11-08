@@ -10,6 +10,14 @@
 
 高级筛选收在页面最下面，不选也能用。
 
+## 直接打开
+
+当前可打开的地址：
+
+https://long-adoption-suppose-text.trycloudflare.com/
+
+不要打开自己电脑上的 `localhost:5173`，那边没有这个服务，浏览器会显示「无法访问此网站」。
+
 ## 在自己电脑上启动
 
 需要 Node.js 20 或以上。在你自己的电脑里执行下面的命令后，浏览器打开 http://localhost:5173 。
