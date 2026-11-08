@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  // 相对路径，静态托管和 CDN 打开时资源不会指回 localhost。
+  base: './',
   plugins: [react()],
   server: {
     host: '0.0.0.0',
