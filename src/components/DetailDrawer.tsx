@@ -1,7 +1,8 @@
 import { channelOf } from '../data/channels';
 import { ReasonList } from './ReasonList';
 import { ScoreRing } from './ScoreRing';
-import { LINK_PLACEHOLDER, formatCny, formatScore, formatStorage, specLine } from '../format';
+import { ModelLink } from './ModelLink';
+import { formatCny, formatScore, formatStorage, specLine } from '../format';
 import type { ScoredListing } from '../types';
 
 interface DetailDrawerProps {
@@ -94,13 +95,7 @@ export function DetailDrawer({ item, inPlan, onClose, onTogglePlan, onRemoveQuot
           <div>
             <dt>链接</dt>
             <dd>
-              {listing.linkUrl ? (
-                <a className="real-link" href={listing.linkUrl} target="_blank" rel="noreferrer noopener">
-                  打开来源
-                </a>
-              ) : (
-                <span className="link-placeholder">{LINK_PLACEHOLDER}</span>
-              )}
+              <ModelLink listing={listing} />
             </dd>
           </div>
           <div className="detail-wide">

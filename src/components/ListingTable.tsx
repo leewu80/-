@@ -1,4 +1,5 @@
 import { ChannelBadge } from './ChannelBadge';
+import { ModelLink } from './ModelLink';
 import { cx, formatCny, formatScore, specLine } from '../format';
 import type { SortKey } from '../useCompare';
 import type { ScoredListing } from '../types';
@@ -56,9 +57,8 @@ export function ListingTable({ items, sortKey, selectedId, onSort, onOpen }: Lis
             {items.map((item) => {
               const selected = item.listing.id === selectedId;
               return (
-                <button
+                <div
                   key={item.listing.id}
-                  type="button"
                   role="row"
                   className={cx('list-row', selected && 'list-row-on')}
                   onClick={() => onOpen(item.listing.id)}
@@ -77,8 +77,11 @@ export function ListingTable({ items, sortKey, selectedId, onSort, onOpen }: Lis
                   </span>
                   <span>{item.listing.seller}</span>
                   <span className="cell-score">{formatScore(item.score.total)}</span>
-                  <span className="cell-go">明细</span>
-                </button>
+                  <span className="cell-go">
+                    <ModelLink listing={item.listing} />
+                    明细
+                  </span>
+                </div>
               );
             })}
           </div>

@@ -1,5 +1,6 @@
 import { CHANNELS } from '../data/channels';
 import { ChannelBadge } from './ChannelBadge';
+import { ModelLink } from './ModelLink';
 import { cx, formatCny, formatScore, specLine } from '../format';
 import type { SpecGroup } from '../scoring/score';
 
@@ -81,6 +82,7 @@ export function ComparisonBoard({ groups, active, onSelect, onOpen }: Comparison
                             <p className="price">{formatCny(item.listing.price)}</p>
                             <p className="seller">{item.listing.seller}</p>
                             <p className="offer-score">综合 {formatScore(item.score.total)}</p>
+                            <ModelLink listing={item.listing} />
                             <button type="button" className="ghost" onClick={() => onOpen(item.listing.id)}>
                               明细
                             </button>

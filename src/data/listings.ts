@@ -1,3 +1,4 @@
+import { modelLink } from './links';
 import type { ChannelId, Chip, Condition, Listing, Series } from '../types';
 
 // 演示样本均为虚构挂牌，只用于讲解筛选和打分，不是真实在售。
@@ -38,6 +39,7 @@ function offers(spec: Spec, rows: Offer[]): Listing[] {
     price: row.price,
     seller: row.seller,
     note: row.note,
+    linkUrl: modelLink(row.channel, spec, row.seller),
   }));
 }
 

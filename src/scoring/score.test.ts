@@ -23,7 +23,8 @@ for (const channel of CHANNELS) {
 
 const seen = new Set<string>();
 for (const item of LISTINGS) {
-  assert.equal(item.linkUrl, undefined, `${item.id} 不应带真实链接`);
+  assert.match(item.linkUrl ?? '', /^https:\/\//, `${item.id} 应有可打开的 https 机型链接`);
+  assert.equal(item.linkUrl?.includes(encodeURIComponent(item.model)), true, `${item.id} 链接应带上机型`);
   assert.equal(/https?:\/\//.test(`${item.note} ${item.seller}`), false);
   const token = `${specKey(item)}::${item.channel}`;
   assert.equal(seen.has(token), false, `同配置同渠道重复：${token}`);

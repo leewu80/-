@@ -91,7 +91,7 @@ export default function App() {
           />
         </main>
       </div>
-      <footer className="foot">果择 · 打分在浏览器里完成 · 没有真实地址时链接保持占位</footer>
+      <footer className="foot">果择 · 打分在浏览器里完成 · 每条样本的链接会打开对应机型</footer>
       <DetailDrawer
         item={state.selected}
         inPlan={state.selected ? state.planIds.includes(state.selected.listing.id) : false}

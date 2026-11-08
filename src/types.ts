@@ -17,7 +17,7 @@ export interface ChannelMeta {
   description: string;
 }
 
-/** 一条在售挂牌。linkUrl 为空时界面只展示占位，不生成链接。 */
+/** 一条在售挂牌。样本自带 linkUrl，指向该机型在对应渠道的公开页面。 */
 export interface Listing {
   id: string;
   series: Series;

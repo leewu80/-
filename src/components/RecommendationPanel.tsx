@@ -1,4 +1,5 @@
 import { ChannelBadge } from './ChannelBadge';
+import { ModelLink } from './ModelLink';
 import { ReasonList } from './ReasonList';
 import { ScoreRing } from './ScoreRing';
 import { cx, formatCny, priceDelta, specLine } from '../format';
@@ -53,6 +54,7 @@ export function RecommendationPanel({ items, planIds, onCompare, onOpen, onToggl
                     <button type="button" className="primary" onClick={() => onCompare(item.specKey)}>
                       看同配置对比
                     </button>
+                    <ModelLink listing={item.listing} />
                     <button type="button" className="ghost" onClick={() => onOpen(item.listing.id)}>
                       看明细
                     </button>
