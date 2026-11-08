@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "tsx src/scoring/score.test.ts && tsx src/data/source.test.ts && tsx src/data/quotes.test.ts"
+    "test": "tsx src/scoring/score.test.ts && tsx src/data/source.test.ts && tsx src/data/quotes.test.ts && tsx src/recommend.test.ts"
   },
   "dependencies": {
     "react": "^19.1.1",

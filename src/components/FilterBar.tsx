@@ -44,7 +44,7 @@ export function FilterBar({ filters, options, matched, rangeError, onChange }: F
           重置{activeCount > 0 ? ` (${activeCount})` : ''}
         </button>
       </div>
-      <p className="hint">不选就是不限。当前命中 {matched} 条，对比和推荐都跟着这份结果走。</p>
+      <p className="hint">不选就是不限。当前命中 {matched} 条。这里只影响下面的对比，不影响上面的预算推荐。</p>
 
       <FilterGroup label="机型系列">
         {SERIES_OPTIONS.map((series) => (

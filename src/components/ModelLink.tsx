@@ -1,21 +1,20 @@
-import { linkLabel } from '../data/links';
 import { LINK_PLACEHOLDER } from '../format';
 import type { Listing } from '../types';
 
-/** 有地址就新开页面直达该机型；手工报价没填地址时才保留占位。 */
-export function ModelLink({ listing }: { listing: Listing }) {
+/** 有地址就新开页面。推荐卡用「去看看」，配置清单用「直达」。手工报价没填地址时才占位。 */
+export function ModelLink({ listing, tone = 'look' }: { listing: Listing; tone?: 'look' | 'go' }) {
   if (!listing.linkUrl) {
     return <span className="link-placeholder">{LINK_PLACEHOLDER}</span>;
   }
   return (
     <a
-      className="real-link"
+      className={tone === 'go' ? 'go-link go-link-line' : 'go-link'}
       href={listing.linkUrl}
       target="_blank"
       rel="noreferrer noopener"
       onClick={(event) => event.stopPropagation()}
     >
-      {linkLabel(listing.channel)}
+      {tone === 'go' ? '直达' : '去看看'}
     </a>
   );
 }
