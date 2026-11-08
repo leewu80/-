@@ -1,0 +1,134 @@
+import { useEffect } from 'react';
+import { channelOf } from '../data/channels';
+import { ReasonList } from './ReasonList';
+import { ScoreRing } from './ScoreRing';
+import { LINK_PLACEHOLDER, formatCny, formatScore, formatStorage, specLine } from '../format';
+import type { ScoredListing } from '../types';
+
+interface DetailDrawerProps {
+  item: ScoredListing | null;
+  onClose: () => void;
+}
+
+export function DetailDrawer({ item, onClose }: DetailDrawerProps) {
+  useEffect(() => {
+    document.body.classList.toggle('drawer-open', item !== null);
+    return () => document.body.classList.remove('drawer-open');
+  }, [item]);
+
+  if (!item) {
+    return null;
+  }
+
+  const { listing, score } = item;
+  const channel = channelOf(listing.channel);
+
+  return (
+    <div className="drawer-root" onClick={onClose}>
+      <aside
+        className="drawer"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detail-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="icon-btn" onClick={onClose} aria-label="关闭明细">
+          关闭
+        </button>
+        <p className="eyebrow">{channel.name}</p>
+        <h2 id="detail-title">
+          {listing.model} {listing.year}
+        </h2>
+        <p className="spec">{specLine(listing)}</p>
+        <p className="price price-lg">{formatCny(listing.price)}</p>
+        <dl className="detail-grid">
+          <div>
+            <dt>机型</dt>
+            <dd>
+              {listing.series} · {listing.model}
+            </dd>
+          </div>
+          <div>
+            <dt>芯片</dt>
+            <dd>
+              {listing.chipDetail}
+              {listing.chipDetail !== listing.chip ? `（${listing.chip}）` : ''}
+            </dd>
+          </div>
+          <div>
+            <dt>内存</dt>
+            <dd>{listing.memoryGb}GB 统一内存</dd>
+          </div>
+          <div>
+            <dt>存储</dt>
+            <dd>{formatStorage(listing.storageGb)}</dd>
+          </div>
+          <div>
+            <dt>显卡</dt>
+            <dd>{listing.gpu}</dd>
+          </div>
+          <div>
+            <dt>成新度</dt>
+            <dd>{listing.condition}</dd>
+          </div>
+          <div>
+            <dt>价格</dt>
+            <dd>{formatCny(listing.price)}</dd>
+          </div>
+          <div>
+            <dt>渠道</dt>
+            <dd>{channel.name}</dd>
+          </div>
+          <div>
+            <dt>卖家 / 主播</dt>
+            <dd>{listing.seller}</dd>
+          </div>
+          <div>
+            <dt>链接</dt>
+            <dd>
+              {listing.linkUrl ? (
+                <a className="real-link" href={listing.linkUrl} target="_blank" rel="noreferrer noopener">
+                  打开来源
+                </a>
+              ) : (
+                <span className="link-placeholder">{LINK_PLACEHOLDER}</span>
+              )}
+            </dd>
+          </div>
+          <div className="detail-wide">
+            <dt>备注</dt>
+            <dd>{listing.note}</dd>
+          </div>
+        </dl>
+        <section className="score-block">
+          <div className="score-head">
+            <h3>打分拆解</h3>
+            <ScoreRing value={score.total} />
+          </div>
+          <ScoreBar label="成新分" value={score.conditionScore} />
+          <ScoreBar label="金额分" value={score.priceScore} />
+          <p className="hint">
+            同配置均价 {formatCny(score.groupAverage)} · 组内最低 {formatCny(score.groupMin)} · 综合{' '}
+            {formatScore(score.total)}
+          </p>
+          <ReasonList reasons={score.reasons} />
+        </section>
+        <p className="sample-id">样本编号 {listing.id}</p>
+      </aside>
+    </div>
+  );
+}
+
+function ScoreBar({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="bar">
+      <div className="bar-label">
+        <span>{label}</span>
+        <span>{formatScore(value)}</span>
+      </div>
+      <div className="bar-track">
+        <span style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
+      </div>
+    </div>
+  );
+}
