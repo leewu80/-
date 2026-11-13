@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>中税云检智能体配置系统·报价方案 App</title>
+  <style>
+    :root {
+      --bg: #071018;
+      --panel: #0e1c28;
+      --line: #1d4e6e;
+      --text: #e8f4fc;
+      --muted: #c3d7e6;
+      --blue: #8ad7ff;
+      --blue-strong: #39b8ff;
+      --mint: #3dface;
+      --amber: #ffc14d;
+      --hot: #ff5d7a;
+      --paper: #fbfcfe;
+      --ink: #142433;
+      --ink-soft: #3e5668;
+      --paper-blue: #0c6694;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    button, input { font: inherit; }
+
+    :focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 16px 48px;
+    }
+
+    h1 { font-size: 26px; line-height: 1.3; margin: 4px 0; }
+    h2 { font-size: 16px; margin: 18px 0 8px; color: var(--blue); }
+
+    .eyebrow, .help, .lede { color: var(--muted); }
+    .lede { margin: 0; max-width: 68em; }
+    .help { margin: 0 0 8px; font-size: 13px; }
+
+    .locks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .locks span {
+      border: 1px solid var(--line);
+      background: #102838;
+      color: var(--blue);
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+
+    .locks .lock-k {
+      background: var(--blue-strong);
+      color: #042033;
+      border-color: var(--blue-strong);
+      font-weight: 700;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 12px 14px 16px;
+    }
+
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+    .tier {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      text-align: left;
+      background: #0c2232;
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 10px 8px;
+      cursor: pointer;
+    }
+
+    .tier[aria-pressed="true"] {
+      border-color: var(--blue-strong);
+      box-shadow: inset 3px 0 0 var(--mint);
+    }
+
+    .tier-kicker { font-weight: 700; }
+    .tier-meta { color: var(--muted); font-size: 12px; }
+    .tier[aria-pressed="true"] .tier-kicker { color: var(--blue); }
+
+    .note { min-height: 1.2em; margin: 8px 0 0; color: var(--mint); font-size: 13px; }
+
+    .guide {
+      margin: 8px 0 0;
+      padding: 8px 10px;
+      border-left: 3px solid var(--blue-strong);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .field { display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 13px; }
+
+    .field input {
+      background: #07141e;
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .field input.bad { border-color: var(--hot); }
+    .field small { min-height: 2.6em; }
+
+    .check {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid var(--line);
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .check input { width: 18px; height: 18px; }
+
+    .inline-sum { color: var(--blue); font-variant-numeric: tabular-nums; }
+
+    .refs { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13px; }
+    .refs li { margin: 0 0 4px; }
+
+    .side { min-width: 0; }
+
+    .sums {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .sum-card {
+      background: #0d2233;
+      border: 1px solid var(--line);
+      padding: 8px;
+    }
+
+    .sum-card span { display: block; color: var(--muted); font-size: 12px; }
+    .sum-card b {
+      display: block;
+      margin: 2px 0;
+      font-size: 22px;
+      font-weight: 700;
+      color: #bfe9ff;
+      font-variant-numeric: tabular-nums;
+    }
+    .sum-card em { display: block; font-style: normal; color: var(--muted); font-size: 12px; }
+    .sum-card.is-tight b { color: var(--amber); }
+    .sum-card.is-over b, .sum-card.is-neg b { color: var(--hot); }
+
+    .callout {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #102838;
+      border-left: 4px solid var(--blue);
+    }
+    .callout strong { display: block; }
+    .callout p { margin: 4px 0 0; color: var(--muted); }
+    .callout.danger { border-color: var(--hot); background: #2a1520; }
+    .callout.warn { border-color: var(--amber); background: #2a220f; }
+    .callout.info { border-color: var(--blue); }
+    .callout button, .actions button, .tier { border-radius: 0; }
+    .callout button {
+      margin-top: 8px;
+      background: var(--amber);
+      color: #2a1c00;
+      border: 0;
+      padding: 6px 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .ok-line { color: var(--mint); margin: 10px 0 0; }
+
+    .tape {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+    .tape div { margin: 0 0 3px; }
+    .tape .warn-text { color: var(--amber); }
+
+    .paper {
+      width: min(100%, 190mm);
+      margin: 12px auto 0;
+      background: var(--paper);
+      color: var(--ink);
+      border: 1px solid #c5d7e6;
+      padding: 14px 16px 12px;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+
+    .paper .co { margin: 0; font-size: 13px; }
+    .paper h2 { margin: 2px 0 0; color: var(--ink); font-size: 22px; }
+    .paper .docsub { margin: 2px 0 0; color: var(--ink-soft); }
+    .paper .rule { border-top: 3px solid var(--paper-blue); margin: 8px 0; }
+
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+    .meta .full { grid-column: 1 / -1; }
+    .meta .k { display: block; color: #5c7384; font-size: 11px; }
+    .meta .v { font-weight: 600; overflow-wrap: anywhere; }
+
+    .paper table { width: 100%; border-collapse: collapse; }
+    .paper th, .paper td { text-align: left; vertical-align: top; padding: 2px 0; font-weight: 400; }
+    .paper td.amt { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .paper tr.grp th { color: var(--paper-blue); font-weight: 700; padding-top: 7px; }
+    .paper tr.grp td { padding-top: 7px; border-top: 1px solid #d5e3ee; }
+    .paper tr.grp th { border-top: 1px solid #d5e3ee; }
+    .paper tr.sub td, .paper tr.sub th { color: var(--ink-soft); padding-left: 12px; }
+    .paper td.unpriced { color: var(--paper-blue); font-weight: 700; }
+    .paper .neg, .paper .over { color: #b42318; }
+    .paper .tight { color: #9a6700; }
+
+    .lead { margin: 8px 0 0; }
+    .mathbox { border: 1px solid #c5d9e8; padding: 6px 8px; margin-top: 6px; }
+    .mathbox div { display: flex; justify-content: space-between; gap: 8px; }
+
+    .sec { margin: 8px 0 2px; font-weight: 700; color: var(--paper-blue); }
+    .accept {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .accept li { padding-left: 12px; position: relative; }
+    .accept li::before { content: "·"; position: absolute; left: 0; color: var(--paper-blue); }
+    .notes { margin: 0; padding-left: 16px; }
+    .notes li { margin: 0 0 2px; }
+    .sign { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .actions button { flex: 1 1 180px; padding: 10px 14px; cursor: pointer; font-weight: 700; }
+    .primary { background: var(--blue-strong); color: #042033; border: 0; }
+    .ghost { background: transparent; color: var(--blue); border: 1px solid var(--blue-strong); }
+    #print-hint, #copy-status { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @media screen and (max-width: 900px) {
+      .layout, .sums, .tiers, .grid2, .accept, .meta { grid-template-columns: 1fr; }
+      .meta .full { grid-column: auto; }
+    }
+
+    @media print {
+      @page { size: A4 portrait; margin: 10mm; }
+      html, body { background: #fff !important; color: #000 !important; }
+      .no-print { display: none !important; }
+      .wrap, .layout, .side { display: block !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+      .paper {
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        border: none !important;
+        padding: 0 !important;
+        font-size: 11.5px;
+      }
+      .paper h2 { font-size: 20px; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="no-print">
+      <p class="eyebrow">中税云检（宁夏）企业管理咨询有限公司</p>
+      <h1>中税云检智能体配置系统·报价方案 App</h1>
+      <p class="lede">给销售算第 1 步报价。改费用和硬件，右边就是四行报价，可以打印成一页。本页不搭建知识库、角色智能体、老板助理或运营系统。</p>
+    </header>
+    <div id="locks" class="locks no-print"></div>
+    <div class="layout">
+      <form id="calc" class="panel no-print" autocomplete="off">
+        <h2>档位</h2>
+        <div class="tiers" role="group" aria-label="档位">
+          <button type="button" class="tier" data-tier="low"></button>
+          <button type="button" class="tier" data-tier="high"></button>
+          <button type="button" class="tier" data-tier="vip"></button>
+        </div>
+        <p class="help">点某一档，整张表回到该档默认。当前档再点一次，同样重置。</p>
+        <p id="reset-note" class="note" role="status"></p>
+        <p id="tier-guide" class="guide"></p>
+
+        <h2>签约费用</h2>
+        <label class="field">
+          <span>签约费用</span>
+          <input id="fee" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+          <small id="hint-fee"></small>
+        </label>
+
+        <h2>硬件金额</h2>
+        <p class="help">五项相加。留空按 0。大于 0 的才写入报价明细。参考价不会自动填进来。</p>
+        <div class="grid2">
+          <label class="field">
+            <span>Mac mini</span>
+            <input id="mini" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+            <small id="hint-mini"></small>
+          </label>
+          <label class="field">
+            <span>iPhone 15 Pro 256G</span>
+            <input id="phone" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+            <small id="hint-phone"></small>
+          </label>
+          <label class="field">
+            <span>MacBook Pro 14 M4 16G+512G</span>
+            <input id="laptop" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+            <small id="hint-laptop"></small>
+          </label>
+          <label class="field">
+            <span>Mac Studio 64G+</span>
+            <input id="studio" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="官网价，不要编" maxlength="14">
+            <small id="hint-studio"></small>
+          </label>
+          <label class="field">
+            <span>显示器（加项）</span>
+            <input id="display" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+            <small id="hint-display"></small>
+          </label>
+        </div>
+        <p id="hardware-inline" class="inline-sum"></p>
+
+        <h2>财税包</h2>
+        <p class="help">打开 = 计入套餐成本，从签约费用里扣除，并按全年交付。关闭 = 只展示价值锚点，不扣费用，不按全年交付。</p>
+        <label class="check">
+          <input type="checkbox" id="incAdv">
+          <span id="label-adv">计入财税顾问</span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="incBk">
+          <span id="label-bk">计入代账</span>
+        </label>
+        <label class="field">
+          <span>税收风险检测</span>
+          <input id="detect" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="尚无定价，不编数字" maxlength="14">
+          <small id="hint-detect"></small>
+        </label>
+
+        <h2>首年陪跑标价</h2>
+        <label class="field">
+          <span>首年陪跑标价（从剩余列支，不含硬件、不含财税包）</span>
+          <input id="coach" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="留空按 0" maxlength="14">
+          <small id="hint-coach"></small>
+        </label>
+
+        <h2>报价单抬头</h2>
+        <label class="field">
+          <span>客户名称（只印在报价单上，可留空）</span>
+          <input id="customer" autocomplete="off" maxlength="40" placeholder="留空就印下划线，不预填">
+          <small>不收集证件，不上传。</small>
+        </label>
+
+        <h2>硬件参考（不进计算）</h2>
+        <p class="help">2026 年 10–11 月公开报价。低端和高端看 99 新，VIP 看全新官配。这里的区间不会改你填的数。</p>
+        <ul id="refs" class="refs"></ul>
+        <p class="help">内存口径：16G 对应云端智能体。本地大模型对应高端 mini 的 24G，或 VIP 的 Studio 64G 及以上。</p>
+        <p class="help">本页只做报价。不搭建知识库、角色智能体、老板助理或运营系统。以后若做运营，只用现有 Grok Bot，不新做后台。</p>
+      </form>
+
+      <div class="side">
+        <div id="sums" class="sums no-print"></div>
+        <div id="warnings" class="no-print" aria-live="polite"></div>
+        <div id="tape" class="tape no-print"></div>
+        <article id="quote" class="paper" aria-label="报价单">正在计算…</article>
+        <div class="actions no-print">
+          <button type="button" class="primary" id="print-btn">打印 / 导出一页报价</button>
+          <button type="button" class="ghost" id="copy-btn">复制给客户的文字稿</button>
+        </div>
+        <p id="print-hint" class="no-print"></p>
+        <p id="copy-status" class="no-print" role="status"></p>
+      </div>
+    </div>
+    <noscript class="no-print"><p>请打开 JavaScript。计算只在你的浏览器里完成，没有服务器。</p></noscript>
+  </div>
+
+  <script>
+    // 锁定常数。页面不提供编辑。价值锚点永远是两项相加，不随开关变化。
+    const ADVISOR = 24000;
+    const BOOKKEEP = 6000;
+    const VALUE_ANCHOR = ADVISOR + BOOKKEEP;
+    // 高端且计入全年顾问、剩余过紧时，规则要求改到这个费用再核对。
+    const FEE_SUGGEST = 65000;
+    const MONEY_FIELDS = ["fee", "mini", "phone", "laptop", "studio", "display", "detect", "coach"];
+
+    const TIERS = {
+      low: {
+        id: "low",
+        name: "低端",
+        tag: "2.5 万",
+        fee: 25000,
+        mini: 3300,
+        phone: 4500,
+        laptop: "",
+        studio: "",
+        display: "",
+        incAdv: false,
+        incBk: true,
+        coach: 8000,
+        ports: 2,
+        portsText: "Mac mini M4 16G+256G，iPhone 15 Pro 256G。不含笔记本，不含 Studio。",
+        condition: "99 新"
+      },
+      high: {
+        id: "high",
+        name: "高端",
+        tag: "5 万",
+        fee: 50000,
+        mini: 5600,
+        phone: 4500,
+        laptop: 9250,
+        studio: "",
+        display: "",
+        incAdv: true,
+        incBk: true,
+        coach: 8000,
+        ports: 3,
+        portsText: "Mac mini M4 24G+256G，iPhone 15 Pro 256G，MacBook Pro 14 M4 16G+512G。",
+        condition: "99 新"
+      },
+      vip: {
+        id: "vip",
+        name: "VIP",
+        tag: "10 万起",
+        fee: 100000,
+        mini: 3799,
+        phone: "",
+        laptop: "",
+        studio: "",
+        display: "",
+        incAdv: true,
+        incBk: true,
+        coach: 15000,
+        ports: 4,
+        portsText: "高端套装改为全新官配，再加 Mac Studio 64G+ 全新。硬件合计只加已填的官网价。",
+        condition: "全新官配"
+      }
+    };
+
+    const DEVICE_NAMES = {
+      mini: { low: "Mac mini M4 16G+256G", high: "Mac mini M4 24G+256G" },
+      phone: {
+        low: "iPhone 15 Pro 256G",
+        high: "iPhone 15 Pro 256G",
+        vip: "iPhone 15 Pro 256G（官配）"
+      },
+      laptop: {
+        low: "MacBook Pro 14 M4 16G+512G",
+        high: "MacBook Pro 14 M4 16G+512G",
+        vip: "MacBook Pro 14 M4 16G+512G（官配）"
+      },
+      studio: { low: "Mac Studio 64G+", high: "Mac Studio 64G+", vip: "Mac Studio 64G+（官配）" },
+      display: { low: "显示器", high: "显示器", vip: "显示器" }
+    };
+
+    const REF_LINES = [
+      "Mac mini M4 16G+256G：在保 99 新约 3,300–3,400；官全新参考 3,799。",
+      "Mac mini M4 24G+256G：99 新约 5,600。",
+      "iPhone 15 Pro 256G：高成色约 4,000–4,900。",
+      "MacBook Pro 14 M4 16G+512G：99 新约 8,500–10,000。高端默认用其中的 9,250。",
+      "Mac Studio：只填官网价。中古 Mid 34,800 仅作参考，不进入计算。"
+    ];
+
+    const LEAD = "上面四行不是另加总价。客户支付签约费用。先扣硬件和已计入的财税包，剩余用来覆盖陪跑。软件席位不在这笔费用里。";
+
+    const state = { tier: "low" };
+    let selfCheckDetail = "";
+    let lastCopy = "";
+
+    function el(tag, attrs, kids) {
+      const node = document.createElement(tag);
+      const a = attrs || {};
+      if (a.class) node.className = a.class;
+      if (a.id) node.id = a.id;
+      if (a.text != null) node.textContent = a.text;
+      if (a.dataset) {
+        Object.keys(a.dataset).forEach(function (key) {
+          node.dataset[key] = a.dataset[key];
+        });
+      }
+      (kids || []).forEach(function (kid) {
+        if (kid == null) return;
+        node.appendChild(typeof kid === "string" ? document.createTextNode(kid) : kid);
+      });
+      return node;
+    }
+
+    function normalizeAmount(raw) {
+      if (raw == null) return "";
+      return String(raw)
+        .replace(/[０-９]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xFF10 + 0x30); })
+        .replace(/[，,\s¥￥元]/g, "")
+        .trim();
+    }
+
+    // 空着算合法的 0。非法格式也按 0 入公式，但输入框会标红。
+    function parseAmount(raw) {
+      const text = normalizeAmount(raw);
+      if (text === "") return { empty: true, valid: true, cents: 0 };
+      const matched = text.match(/^(\d+)(?:\.(\d{1,2}))?$/);
+      if (!matched || !Number.isSafeInteger(Number(matched[1]))) {
+        return { empty: false, valid: false, cents: 0 };
+      }
+      const whole = Number(matched[1]);
+      const frac = matched[2] ? Number(matched[2].padEnd(2, "0")) : 0;
+      const cents = whole * 100 + frac;
+      if (!Number.isSafeInteger(cents)) return { empty: false, valid: false, cents: 0 };
+      return { empty: false, valid: true, cents: cents };
+    }
+
+    function yuanString(cents) {
+      const neg = cents < 0;
+      const abs = Math.abs(cents);
+      const whole = Math.trunc(abs / 100);
+      const frac = abs % 100;
+      let body = String(whole);
+      if (frac) body += "." + String(frac).padStart(2, "0").replace(/0$/, "");
+      return neg ? "-" + body : body;
+    }
+
+    function formatYuanCents(cents) {
+      const raw = yuanString(cents);
+      const neg = raw.charAt(0) === "-";
+      const body = neg ? raw.slice(1) : raw;
+      const bits = body.split(".");
+      bits[0] = bits[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return (neg ? "-¥" : "¥") + bits.join(".");
+    }
+
+    function formatPctFromCents(hardwareCents, feeCents) {
+      if (feeCents <= 0) return "0.0";
+      const hundredths = Math.round((hardwareCents * 10000) / feeCents);
+      const text = (hundredths / 100).toFixed(2);
+      return text.charAt(text.length - 1) === "0" ? (hundredths / 100).toFixed(1) : text;
+    }
+
+    function computeQuote(form) {
+      const parsed = {};
+      MONEY_FIELDS.forEach(function (key) {
+        parsed[key] = parseAmount(form[key]);
+      });
+      // 硬件 = mini + 手机 + 笔记本 + Studio + 显示器。空按 0。
+      const hardwareCents = parsed.mini.cents + parsed.phone.cents + parsed.laptop.cents + parsed.studio.cents + parsed.display.cents;
+      // 财税包 = 打开的顾问 24000 + 打开的代账 6000 + 手填检测。检测空着按 0，报价单不写成价格。
+      const taxCents = (form.incAdv ? ADVISOR * 100 : 0) + (form.incBk ? BOOKKEEP * 100 : 0) + parsed.detect.cents;
+      const feeCents = parsed.fee.cents;
+      // 剩余 = 签约费用 - 硬件 - 财税包。
+      const restCents = feeCents - hardwareCents - taxCents;
+      const cap = form.tier === "vip" ? 60 : 35;
+      // 超限用整数比较：硬件 / 费用 > 上限。费用为 0 时不叫超限，占比记 0。
+      const over = feeCents > 0 && hardwareCents * 100 > cap * feeCents;
+      const coachCents = parsed.coach.cents;
+      // 次年五折只乘首年陪跑标价，不乘签约费用，也不乘含硬件的合计。
+      const year2Cents = Math.round(coachCents / 2);
+      const tight = restCents < 5000 * 100;
+      const fourPiece = parsed.mini.cents > 0 && parsed.phone.cents > 0 && parsed.laptop.cents > 0 && parsed.studio.cents > 0;
+      const invalid = MONEY_FIELDS.filter(function (key) { return !parsed[key].valid; });
+      return {
+        parsed: parsed,
+        hardwareCents: hardwareCents,
+        taxCents: taxCents,
+        feeCents: feeCents,
+        restCents: restCents,
+        coachCents: coachCents,
+        year2Cents: year2Cents,
+        hardware: hardwareCents / 100,
+        taxCost: taxCents / 100,
+        fee: feeCents / 100,
+        rest: restCents / 100,
+        coach: coachCents / 100,
+        year2: year2Cents / 100,
+        cap: cap,
+        over: over,
+        tight: tight,
+        fourPiece: fourPiece,
+        invalid: invalid
+      };
+    }
+
+    function runSelfCheck() {
+      const low = computeQuote({
+        tier: "low", fee: "25000", mini: "3300", phone: "4500", laptop: "", studio: "", display: "", detect: "", coach: "8000",
+        incAdv: false, incBk: true
+      });
+      const high = computeQuote({
+        tier: "high", fee: "50000", mini: "5600", phone: "4500", laptop: "9250", studio: "", display: "", detect: "", coach: "8000",
+        incAdv: true, incBk: true
+      });
+      const vip = computeQuote({
+        tier: "vip", fee: "100000", mini: "3799", phone: "", laptop: "", studio: "", display: "", detect: "", coach: "15000",
+        incAdv: true, incBk: true
+      });
+      const problems = [];
+      if (VALUE_ANCHOR !== 30000) problems.push("锚点不是 30000");
+      if (!(low.hardware === 7800 && low.taxCost === 6000 && low.rest === 11200 && low.year2 === 4000 && !low.tight && !low.over && low.cap === 35)) {
+        problems.push("低端默认应为硬件 7800、财税包 6000、剩余 11200");
+      }
+      if (!(high.hardware === 19350 && high.taxCost === 30000 && high.rest === 650 && high.year2 === 4000 && high.tight && high.over && high.cap === 35)) {
+        problems.push("高端默认应为硬件 19350、财税包 30000、剩余 650");
+      }
+      if (high.year2 === 25000) problems.push("五折乘到了签约费用上");
+      if (!(vip.hardware === 3799 && vip.taxCost === 30000 && vip.rest === 66201 && vip.year2 === 7500 && vip.cap === 60 && !vip.over && vip.parsed.studio.cents === 0)) {
+        problems.push("VIP 默认核算不对");
+      }
+      if (formatYuanCents(780000) !== "¥7,800" || formatYuanCents(65000) !== "¥650" || formatYuanCents(1935000) !== "¥19,350") {
+        problems.push("金额格式不对");
+      }
+      if (formatPctFromCents(780000, 2500000) !== "31.2" || formatPctFromCents(1935000, 5000000) !== "38.7") {
+        problems.push("占比格式不对");
+      }
+      if (parseAmount("").cents !== 0 || parseAmount("3,300").cents !== 330000 || parseAmount("３３００").cents !== 330000 || parseAmount("abc").valid) {
+        problems.push("金额解析不对");
+      }
+      return { pass: problems.length === 0, detail: problems.join("；") };
+    }
+
+    function todayText() {
+      try {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: "Asia/Shanghai",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        }).formatToParts(new Date());
+        const pick = function (type) { return parts.find(function (part) { return part.type === type; }).value; };
+        return Number(pick("year")) + "年" + Number(pick("month")) + "月" + Number(pick("day")) + "日";
+      } catch (err) {
+        const now = new Date();
+        return now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日";
+      }
+    }
+
+    function deviceName(key, form, model) {
+      if (key === "mini" && form.tier === "vip") {
+        if (model.parsed.mini.cents === 3799 * 100) return "Mac mini M4 16G+256G（官全新参考）";
+        return "Mac mini M4（官配，型号以合同为准）";
+      }
+      return DEVICE_NAMES[key][form.tier];
+    }
+
+    function advisorStatus(form) {
+      if (form.incAdv) return "财税顾问全年计入，按合同交付。";
+      return "财税顾问未全年计入，可写升级或限次，场次以合同为准。锚点只作展示，不是全年满配交付。";
+    }
+
+    function bookStatus(form) {
+      if (form.incBk) return "代账按本档一户，已计入。";
+      return "代账未计入，不按一户全年交付。锚点只作展示。";
+    }
+
+    function advDetail(form) {
+      const price = formatYuanCents(ADVISOR * 100);
+      return form.incAdv
+        ? "财税顾问 " + price + "，已计入全年。"
+        : "财税顾问 " + price + "，未计入，锚点只展示。";
+    }
+
+    function bkDetail(form) {
+      const price = formatYuanCents(BOOKKEEP * 100);
+      return form.incBk
+        ? "代账一般纳税人一户 " + price + "，已计入。"
+        : "代账一般纳税人一户 " + price + "，未计入，锚点只展示。";
+    }
+
+    function detectDetail(model) {
+      const parsed = model.parsed.detect;
+      if (!parsed.valid) return "税收风险检测：金额格式无效，公式里按 0。";
+      if (parsed.empty) return "税收风险检测：尚无定价，不编数字。";
+      return "税收风险检测：" + formatYuanCents(parsed.cents) + "，已按手填计入。";
+    }
+
+    function acceptanceLines(form) {
+      const agents = {
+        low: "标准角色智能体上线（低端 3 个）。",
+        high: "标准角色智能体上线（高端 5 个）。",
+        vip: "标准角色智能体上线（个数按合同定制）。"
+      }[form.tier];
+      return [
+        "知识库入库并可检索。",
+        agents,
+        "老板私人助理为独立账号，可日常使用。",
+        "陪跑按每周复盘、每月验收。",
+        form.incBk ? "代账按本档一户交付。" : "代账未计入，不按一户全年交付。",
+        form.incAdv ? "财税顾问全年计入，以合同书面为准。" : "财税顾问按限次写入合同，不按全年满配。"
+      ];
+    }
+
+    function noteLines() {
+      return [
+        "次年只按首年陪跑标价的一半计费，不把硬件或签约总价打对折。硬件不重复计。代账和顾问续费另列。",
+        "政策咨询免费但有上限，只讲路径，不对个案税额下结论。",
+        "发票税目，以及硬件属于销售还是租赁，本页不认定，交财税顾问复核。",
+        "16G 用于云端智能体。本地大模型对应高端 mini 24G，或 VIP Studio 64G 及以上。"
+      ];
+    }
+
+    function feeText(model, form) {
+      if (!model.parsed.fee.valid) return "金额无效，按 0 计算";
+      const base = TIERS[form.tier].fee;
+      const main = formatYuanCents(model.feeCents);
+      if (model.fee !== base) return main + "（已手改，本档默认 " + formatYuanCents(base * 100) + "）";
+      return main;
+    }
+
+    function viewOf(model, form) {
+      const tier = TIERS[form.tier];
+      const devices = [];
+      ["mini", "phone", "laptop", "studio", "display"].forEach(function (key) {
+        const parsed = model.parsed[key];
+        if (parsed.valid && parsed.cents > 0) {
+          devices.push({ name: deviceName(key, form, model), cents: parsed.cents });
+        }
+      });
+      let missingVip = "";
+      if (form.tier === "vip") {
+        const missing = [];
+        if (model.parsed.phone.cents <= 0) missing.push("iPhone");
+        if (model.parsed.laptop.cents <= 0) missing.push("MacBook Pro");
+        if (model.parsed.studio.cents <= 0) missing.push("Mac Studio");
+        if (missing.length) missingVip = "未计入本次硬件：" + missing.join("、") + "（未填官网价）。";
+      }
+      return {
+        date: todayText(),
+        customer: String(form.customer || "").replace(/[\r\n]+/g, " ").trim(),
+        tierName: tier.name + " " + tier.tag,
+        feeText: feeText(model, form),
+        ports: tier.ports + " 个：" + tier.portsText,
+        condition: tier.condition,
+        anchor: formatYuanCents(VALUE_ANCHOR * 100),
+        advisor: advisorStatus(form),
+        book: bookStatus(form),
+        devices: devices,
+        missingVip: missingVip,
+        hardware: formatYuanCents(model.hardwareCents),
+        coach: formatYuanCents(model.coachCents),
+        year2: formatYuanCents(model.year2Cents),
+        tax: formatYuanCents(model.taxCents),
+        advDetail: advDetail(form),
+        bkDetail: bkDetail(form),
+        detectDetail: detectDetail(model),
+        rest: formatYuanCents(model.restCents),
+        pct: formatPctFromCents(model.hardwareCents, model.feeCents),
+        cap: model.cap,
+        over: model.over,
+        acceptance: acceptanceLines(form),
+        notes: noteLines()
+      };
+    }
+
+    function buildCopy(view) {
+      const lines = [
+        "中税云检（宁夏）企业管理咨询有限公司",
+        "报价方案",
+        "报价日期：" + view.date,
+        "客户名称：" + (view.customer || "________"),
+        "档位：" + view.tierName,
+        "签约费用：" + view.feeText,
+        "端口：" + view.ports,
+        "计价成色：" + view.condition,
+        "对外价值锚点：" + view.anchor + "（财税顾问 " + formatYuanCents(ADVISOR * 100) + " + 代账 " + formatYuanCents(BOOKKEEP * 100) + "）。固定展示。没有计入的项目，不等于全年满配交付。",
+        view.advisor,
+        view.book,
+        "",
+        "1. 硬件一次性：" + view.hardware
+      ];
+      if (!view.devices.length) lines.push("（没有大于 0 的设备）");
+      view.devices.forEach(function (device) {
+        lines.push("- " + device.name + "：" + formatYuanCents(device.cents));
+      });
+      if (view.missingVip) lines.push(view.missingVip);
+      lines.push("2. 软件席位：未列入实时签约价");
+      lines.push("3. 陪跑：首年标价 " + view.coach + "；次年本行五折 " + view.year2);
+      lines.push("五折只乘首年陪跑标价，不乘硬件，也不乘签约费用。");
+      lines.push("4. 财税包：" + view.tax);
+      lines.push(view.advDetail);
+      lines.push(view.bkDetail);
+      lines.push(view.detectDetail);
+      lines.push("");
+      lines.push(LEAD);
+      lines.push("剩余：" + view.rest);
+      lines.push("硬件占比：" + view.pct + "%（上限 " + view.cap + "%" + (view.over ? "，已超过上限" : "，未超过") + "）");
+      lines.push("");
+      lines.push("对外验收口径：");
+      view.acceptance.forEach(function (line) { lines.push("- " + line); });
+      lines.push("");
+      lines.push("附注：");
+      view.notes.forEach(function (line) { lines.push("- " + line); });
+      return lines.join("\n");
+    }
+
+    function hintText(field, tierId) {
+      const tier = TIERS[tierId];
+      const yuan = function (amount) { return formatYuanCents(amount * 100); };
+      if (field === "fee" && tierId === "low") return "默认 " + yuan(tier.fee) + "。只计入代账，不要把全年顾问打包进来。";
+      if (field === "fee" && tierId === "high") return "默认 " + yuan(tier.fee) + "。全年顾问若计入，剩余会紧，可改成 " + formatYuanCents(FEE_SUGGEST * 100) + "。";
+      if (field === "fee") return "默认 " + yuan(tier.fee) + "，可以再往上调。";
+      if (field === "mini" && tierId === "low") return "M4 16G+256G，99 新默认 " + yuan(tier.mini) + "。";
+      if (field === "mini" && tierId === "high") return "M4 24G+256G，99 新默认 " + yuan(tier.mini) + "。";
+      if (field === "mini") return "默认 " + yuan(tier.mini) + " 只是 16G+256G 官全新参考。24G 全新请改成官网标价。";
+      if (field === "phone" && tierId !== "vip") return "默认 " + yuan(tier.phone) + "。高成色参考约 4,000–4,900。";
+      if (field === "phone") return "空着按 0。请填官网价。";
+      if (field === "laptop" && tierId === "high") return "99 新默认 " + yuan(tier.laptop) + "。参考区间 8,500–10,000。";
+      if (field === "laptop" && tierId === "vip") return "空着按 0。请填官网价。";
+      if (field === "laptop") return "低端默认不含笔记本。";
+      if (field === "studio" && tierId === "vip") return "空着按 0。请填官网价，不要拿中古参考价充数。";
+      if (field === "studio") return "这一档默认不含 Studio。空着按 0。";
+      if (field === "detect") return "不要预填。没定价就留空。";
+      if (field === "coach") return "默认 " + yuan(tier.coach) + "。从剩余列支，不含硬件和财税包。次年五折只乘这个数。";
+      return "选配。空着按 0，大于 0 才计入硬件。";
+    }
+
+    function guideText(tierId) {
+      if (tierId === "low") return "低端费用默认停在 25,000，只计入代账。财税顾问是升级或限次试用，不要把全年 24,000 打包进这 25,000。";
+      if (tierId === "high") return "高端若费用停在 50,000，并且全年顾问计入，剩余会很紧：默认硬件 19,350，财税包 30,000，剩余 650。建议改成 65,000，或关闭「计入财税顾问」、按有限场次交付。锚点 24,000 仍然展示，合同写场次。";
+      return "VIP 从 100,000 起，硬件占比上限 60%。四口是高端套装的全新官配，再加 Mac Studio 64G+ 全新。官网价没有代填。mini 格里的 3,799 只是 16G+256G 官全新参考。陪跑首年标价默认 15,000，次年只把这个标价打五折。";
+    }
+
+    function readForm() {
+      const form = { tier: state.tier, customer: document.getElementById("customer").value };
+      MONEY_FIELDS.forEach(function (key) {
+        form[key] = document.getElementById(key).value;
+      });
+      form.incAdv = document.getElementById("incAdv").checked;
+      form.incBk = document.getElementById("incBk").checked;
+      return form;
+    }
+
+    function collectWarnings(model, form) {
+      const warnings = [];
+      if (selfCheckDetail) {
+        warnings.push({ level: "danger", code: "self", title: "内置核算对不上，先不要用这一版报价。", detail: selfCheckDetail });
+      }
+      if (model.invalid.length) {
+        const names = { fee: "签约费用", mini: "Mac mini", phone: "iPhone", laptop: "笔记本", studio: "Mac Studio", display: "显示器", detect: "税收风险检测", coach: "首年陪跑标价" };
+        warnings.push({
+          level: "danger",
+          code: "invalid",
+          title: "有金额格式不对，该格按 0 计算。",
+          detail: model.invalid.map(function (key) { return names[key]; }).join("、") + "。请只填数字。"
+        });
+      }
+      // 低端四件套：mini、手机、笔记本、Studio 都大于 0。显示器不算进这四件。
+      if (model.fourPiece && form.tier === "low") {
+        warnings.push({
+          level: "danger",
+          code: "four",
+          title: "低端不要加回笔记本和 Studio",
+          detail: "四件套加上财税包会亏。请清空笔记本和 Studio，或改到高端 / VIP。",
+          action: "clear-extra"
+        });
+      }
+      if (model.tight) {
+        let detail = "请提高签约费用、取消一项财税计入，或降低硬件金额。";
+        let action = "";
+        if (form.tier === "high" && form.incAdv) {
+          if (model.fee === FEE_SUGGEST) {
+            detail = "费用已经是 " + formatYuanCents(FEE_SUGGEST * 100) + "，剩余仍然不到 5,000。请再提高签约费用、关闭「计入财税顾问」并按有限场次写入合同，或降低硬件。";
+          } else {
+            detail = "请把签约费用改为 " + formatYuanCents(FEE_SUGGEST * 100) + "，再核对剩余；或者关闭「计入财税顾问」，顾问按有限场次交付，合同写明场次。价值锚点 24,000 仍展示，但不按全年满配交付。";
+            action = "fee-suggest";
+          }
+        }
+        warnings.push({
+          level: "warn",
+          code: "tight",
+          title: "剩余不到 5,000，陪跑和软件空间过紧",
+          detail: detail,
+          action: action
+        });
+      }
+      if (form.tier === "vip" && model.parsed.studio.cents === 0) {
+        warnings.push({
+          level: "info",
+          code: "studio",
+          title: "请填写 Mac Studio 的官网标价，再核对硬件占比有没有超过 60% 上限。",
+          detail: "中古 Mid 34,800 只是参考，不会自动填入。不要自编价格。"
+        });
+      }
+      if (model.over) {
+        warnings.push({
+          level: "danger",
+          code: "over",
+          title: "硬件占比 " + formatPctFromCents(model.hardwareCents, model.feeCents) + "%，已经超过本档上限 " + model.cap + "%。",
+          detail: "请提高签约费用，或降低硬件金额，再交给客户。"
+        });
+      }
+      return warnings;
+    }
+
+    function renderWarnings(model, form) {
+      const box = document.getElementById("warnings");
+      box.replaceChildren();
+      const warnings = collectWarnings(model, form);
+      if (!warnings.length) {
+        box.appendChild(el("p", { class: "ok-line", text: "没有触发这些提示：低端四件套、剩余过紧、硬件超上限、VIP 未填 Studio。" }));
+        return;
+      }
+      warnings.forEach(function (item) {
+        const kids = [el("strong", { text: item.title })];
+        if (item.detail) kids.push(el("p", { text: item.detail }));
+        const node = el("div", { class: "callout " + item.level, dataset: { warn: item.code } }, kids);
+        if (item.action === "fee-suggest") {
+          const button = el("button", { text: "把签约费用改为 " + formatYuanCents(FEE_SUGGEST * 100) });
+          button.type = "button";
+          button.addEventListener("click", function () {
+            document.getElementById("fee").value = String(FEE_SUGGEST);
+            document.getElementById("reset-note").textContent = "签约费用已改为 " + formatYuanCents(FEE_SUGGEST * 100) + "，其他格没动。";
+            render();
+          });
+          node.appendChild(button);
+        }
+        if (item.action === "clear-extra") {
+          const button = el("button", { text: "清空笔记本和 Studio" });
+          button.type = "button";
+          button.addEventListener("click", function () {
+            document.getElementById("laptop").value = "";
+            document.getElementById("studio").value = "";
+            document.getElementById("reset-note").textContent = "已清空笔记本和 Studio。";
+            render();
+          });
+          node.appendChild(button);
+        }
+        box.appendChild(node);
+      });
+    }
+
+    function renderSums(model) {
+      const box = document.getElementById("sums");
+      const pct = formatPctFromCents(model.hardwareCents, model.feeCents);
+      const cards = [
+        { label: "硬件", text: formatYuanCents(model.hardwareCents), sub: "五项合计", id: "sum-hardware", value: yuanString(model.hardwareCents), cls: "" },
+        { label: "财税包", text: formatYuanCents(model.taxCents), sub: "已计入部分", id: "sum-tax", value: yuanString(model.taxCents), cls: "" },
+        {
+          label: "剩余",
+          text: formatYuanCents(model.restCents),
+          sub: "费用 − 硬件 − 财税包",
+          id: "sum-rest",
+          value: yuanString(model.restCents),
+          cls: model.restCents < 0 ? "is-neg" : (model.tight ? "is-tight" : "")
+        },
+        {
+          label: "硬件占比",
+          text: pct + "%",
+          sub: "上限 " + model.cap + "%",
+          id: "sum-pct",
+          value: pct,
+          cls: model.over ? "is-over" : ""
+        }
+      ];
+      box.replaceChildren.apply(box, cards.map(function (card) {
+        return el("div", { class: "sum-card " + card.cls }, [
+          el("span", { text: card.label }),
+          el("b", { id: card.id, dataset: { value: card.value }, text: card.text }),
+          el("em", { text: card.sub })
+        ]);
+      }));
+    }
+
+    function renderTape(model, form) {
+      const parsed = model.parsed;
+      const detectNote = parsed.detect.empty ? "（未填，按 0，不是定价）" : "";
+      const lines = [
+        "硬件 " + formatYuanCents(model.hardwareCents) + " = mini " + formatYuanCents(parsed.mini.cents) + " + 手机 " + formatYuanCents(parsed.phone.cents) + " + 笔记本 " + formatYuanCents(parsed.laptop.cents) + " + Studio " + formatYuanCents(parsed.studio.cents) + " + 显示器 " + formatYuanCents(parsed.display.cents),
+        "财税包 " + formatYuanCents(model.taxCents) + " = 顾问 " + formatYuanCents(form.incAdv ? ADVISOR * 100 : 0) + " + 代账 " + formatYuanCents(form.incBk ? BOOKKEEP * 100 : 0) + " + 检测 " + formatYuanCents(parsed.detect.cents) + detectNote,
+        "剩余 " + formatYuanCents(model.restCents) + " = 费用 " + formatYuanCents(model.feeCents) + " − 硬件 " + formatYuanCents(model.hardwareCents) + " − 财税包 " + formatYuanCents(model.taxCents),
+        "占比 " + formatPctFromCents(model.hardwareCents, model.feeCents) + "% ，上限 " + model.cap + "%" + (model.feeCents > 0 ? "" : "（费用为 0，占比记 0）"),
+        "次年陪跑 " + formatYuanCents(model.year2Cents) + " = 首年陪跑标价 " + formatYuanCents(model.coachCents) + " × 0.5（只乘这一行）",
+        "价值锚点 " + formatYuanCents(VALUE_ANCHOR * 100) + " = " + formatYuanCents(ADVISOR * 100) + " + " + formatYuanCents(BOOKKEEP * 100) + "（固定展示）"
+      ];
+      const box = document.getElementById("tape");
+      box.replaceChildren();
+      lines.forEach(function (line) { box.appendChild(el("div", { text: line })); });
+      if (model.coachCents > model.restCents) {
+        box.appendChild(el("div", { class: "warn-text", text: "首年陪跑标价高于剩余。陪跑从剩余里列支，不含硬件和财税包。" }));
+      }
+      box.appendChild(el("div", { text: "空格按 0。未大于 0 的设备不写进给客户的硬件明细。检测未填不写成 0 元。" }));
+    }
+
+    function th(text) {
+      const node = el("th", { text: text });
+      node.scope = "row";
+      return node;
+    }
+
+    function amt(text, id, cents, extraClass) {
+      return el("td", {
+        class: "amt" + (extraClass ? " " + extraClass : ""),
+        id: id || "",
+        dataset: { value: yuanString(cents) },
+        text: text
+      });
+    }
+
+    function tr(className, cells) {
+      const row = el("tr", { class: className });
+      cells.forEach(function (cell) { row.appendChild(cell); });
+      return row;
+    }
+
+    function trFull(className, text) {
+      const row = el("tr", { class: className });
+      const cell = el("td", { text: text });
+      cell.colSpan = 2;
+      row.appendChild(cell);
+      return row;
+    }
+
+    function metaItem(label, value, opts) {
+      const o = opts || {};
+      return el("div", { class: o.full ? "full" : "" }, [
+        el("span", { class: "k", text: label }),
+        el("span", { class: "v" + (o.extra ? " " + o.extra : ""), id: o.id || "", dataset: o.value != null ? { value: o.value } : null, text: value })
+      ]);
+    }
+
+    function renderQuote(view, model) {
+      const root = document.getElementById("quote");
+      const table = el("table");
+      table.appendChild(el("caption", { class: "sr-only", text: "四行报价" }));
+      const body = el("tbody");
+      body.appendChild(tr("grp", [th("1. 硬件一次性"), amt(view.hardware, "q-hardware", model.hardwareCents)]));
+      if (!view.devices.length) body.appendChild(trFull("sub", "没有大于 0 的设备。"));
+      view.devices.forEach(function (device) {
+        body.appendChild(tr("sub", [th(device.name), amt(formatYuanCents(device.cents), "", device.cents)]));
+      });
+      if (view.missingVip) body.appendChild(trFull("sub", view.missingVip));
+      body.appendChild(tr("grp", [th("2. 软件席位"), el("td", { class: "amt unpriced", text: "未列入实时签约价" })]));
+      body.appendChild(tr("grp", [th("3. 陪跑（首年标价）"), amt(view.coach, "q-coach", model.coachCents)]));
+      body.appendChild(tr("sub", [th("次年本行五折（只乘首年陪跑标价）"), amt(view.year2, "q-year2", model.year2Cents)]));
+      body.appendChild(tr("grp", [th("4. 财税包"), amt(view.tax, "q-tax", model.taxCents)]));
+      body.appendChild(trFull("sub", view.advDetail));
+      body.appendChild(trFull("sub", view.bkDetail));
+      body.appendChild(trFull("sub", view.detectDetail));
+      table.appendChild(body);
+
+      const pctClass = view.over ? "over" : "";
+      const restClass = model.restCents < 0 ? "neg" : (model.tight ? "tight" : "");
+      const math = el("div", { class: "mathbox" }, [
+        el("div", {}, [el("span", { text: "签约费用" }), el("span", { id: "q-fee", dataset: { value: yuanString(model.feeCents) }, text: view.feeText })]),
+        el("div", {}, [el("span", { text: "硬件" }), el("span", { text: view.hardware })]),
+        el("div", {}, [el("span", { text: "财税包计入" }), el("span", { text: view.tax })]),
+        el("div", {}, [el("span", { text: "剩余" }), el("span", { class: restClass, id: "q-rest", dataset: { value: yuanString(model.restCents) }, text: view.rest })]),
+        el("div", {}, [el("span", { text: "硬件占比" }), el("span", { class: pctClass, id: "q-pct", dataset: { value: view.pct }, text: view.pct + "%（上限 " + view.cap + "%" + (view.over ? "，已超过上限" : "，未超过") + "）" })])
+      ]);
+
+      const accept = el("ul", { class: "accept" });
+      view.acceptance.forEach(function (line) { accept.appendChild(el("li", { text: line })); });
+      const notes = el("ol", { class: "notes" });
+      view.notes.forEach(function (line) { notes.appendChild(el("li", { text: line })); });
+
+      root.replaceChildren(
+        el("p", { class: "co", text: "中税云检（宁夏）企业管理咨询有限公司" }),
+        el("h2", { text: "报价方案" }),
+        el("p", { class: "docsub", text: "智能体配置报价" }),
+        el("div", { class: "rule" }),
+        el("div", { class: "meta" }, [
+          metaItem("报价日期", view.date),
+          metaItem("客户名称", view.customer || "________"),
+          metaItem("档位", view.tierName, { id: "q-tier" }),
+          metaItem("计价成色", view.condition),
+          metaItem("端口", view.ports, { full: true, id: "q-ports" }),
+          metaItem("对外价值锚点", view.anchor + "（财税顾问 " + formatYuanCents(ADVISOR * 100) + " + 代账 " + formatYuanCents(BOOKKEEP * 100) + "）。固定展示。没有计入的项目，不等于全年满配交付。", { full: true, id: "q-anchor", value: "30000" }),
+          metaItem("顾问", view.advisor, { full: true, id: "q-advisor" }),
+          metaItem("代账", view.book, { full: true, id: "q-book" })
+        ]),
+        table,
+        el("p", { class: "lead", text: LEAD }),
+        math,
+        el("p", { class: "sec", text: "对外验收口径" }),
+        accept,
+        el("p", { class: "sec", text: "附注" }),
+        notes,
+        el("div", { class: "sign" }, [
+          el("span", { text: "客户确认：__________" }),
+          el("span", { text: "日期：__________" }),
+          el("span", { text: "报价人：__________" })
+        ])
+      );
+    }
+
+    function updateHints() {
+      ["fee", "mini", "phone", "laptop", "studio", "display", "detect", "coach"].forEach(function (field) {
+        document.getElementById("hint-" + field).textContent = hintText(field, state.tier);
+      });
+      document.getElementById("tier-guide").textContent = guideText(state.tier);
+    }
+
+    function paintTierPressed() {
+      document.querySelectorAll(".tier").forEach(function (btn) {
+        btn.setAttribute("aria-pressed", btn.dataset.tier === state.tier ? "true" : "false");
+      });
+    }
+
+    function syncValidity(form) {
+      MONEY_FIELDS.forEach(function (key) {
+        const input = document.getElementById(key);
+        const ok = parseAmount(form[key]).valid;
+        input.classList.toggle("bad", !ok);
+        input.setAttribute("aria-invalid", ok ? "false" : "true");
+      });
+    }
+
+    function render() {
+      const form = readForm();
+      const model = computeQuote(form);
+      syncValidity(form);
+      document.getElementById("hardware-inline").textContent = "五项合计 " + formatYuanCents(model.hardwareCents) + "（空按 0）";
+      renderSums(model);
+      renderWarnings(model, form);
+      renderTape(model, form);
+      const view = viewOf(model, form);
+      renderQuote(view, model);
+      lastCopy = buildCopy(view);
+      const warnCount = document.querySelectorAll("#warnings .callout").length;
+      document.getElementById("print-hint").textContent = warnCount
+        ? "上面还有提示。确认后再打印给客户。打印页不含这些内部提示。"
+        : "可以打印。打印页是一页报价，不含左边的计算器。";
+    }
+
+    function applyTier(tierId, announce) {
+      const tier = TIERS[tierId];
+      state.tier = tierId;
+      const write = function (id, value) {
+        document.getElementById(id).value = value === "" || value == null ? "" : String(value);
+      };
+      write("fee", tier.fee);
+      write("mini", tier.mini);
+      write("phone", tier.phone);
+      write("laptop", tier.laptop);
+      write("studio", tier.studio);
+      write("display", tier.display);
+      write("detect", "");
+      write("coach", tier.coach);
+      document.getElementById("incAdv").checked = tier.incAdv;
+      document.getElementById("incBk").checked = tier.incBk;
+      paintTierPressed();
+      updateHints();
+      document.getElementById("reset-note").textContent = announce
+        ? "已按「" + tier.name + "」默认整表重置，手改的数字已盖掉。"
+        : "";
+      render();
+    }
+
+    function fillStatic() {
+      document.querySelectorAll(".tier").forEach(function (btn) {
+        const tier = TIERS[btn.dataset.tier];
+        btn.replaceChildren(
+          el("span", { class: "tier-kicker", text: tier.name + " " + tier.tag }),
+          el("span", { class: "tier-meta", text: tier.ports + " 个端口 · 默认 " + formatYuanCents(tier.fee * 100) })
+        );
+      });
+      document.getElementById("locks").replaceChildren(
+        el("span", { class: "lock-k", text: "锁定不可改" }),
+        el("span", { text: "财税顾问 " + formatYuanCents(ADVISOR * 100) + " / 年" }),
+        el("span", { text: "代账一般纳税人一户 " + formatYuanCents(BOOKKEEP * 100) + " / 年" }),
+        el("span", { text: "对外价值锚点 " + formatYuanCents(VALUE_ANCHOR * 100) + "，固定展示" })
+      );
+      const refs = document.getElementById("refs");
+      REF_LINES.forEach(function (line) { refs.appendChild(el("li", { text: line })); });
+      document.getElementById("label-adv").textContent = "计入财税顾问（全年 " + formatYuanCents(ADVISOR * 100) + "）";
+      document.getElementById("label-bk").textContent = "计入代账（一般纳税人一户 " + formatYuanCents(BOOKKEEP * 100) + "）";
+    }
+
+    function onInput(event) {
+      if (!event.target || event.target.id !== "customer") {
+        document.getElementById("reset-note").textContent = "";
+      }
+      render();
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () {
+          return copyBySelection(text);
+        });
+      }
+      return Promise.resolve(copyBySelection(text));
+    }
+
+    function copyBySelection(text) {
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      let ok = false;
+      try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+      area.remove();
+      return ok;
+    }
+
+    function init() {
+      const check = runSelfCheck();
+      selfCheckDetail = check.pass ? "" : check.detail;
+      if (!check.pass) console.error(check.detail);
+      fillStatic();
+      document.getElementById("calc").addEventListener("submit", function (event) { event.preventDefault(); });
+      document.getElementById("calc").addEventListener("input", onInput);
+      document.getElementById("calc").addEventListener("change", onInput);
+      document.querySelectorAll(".tier").forEach(function (btn) {
+        btn.addEventListener("click", function () { applyTier(btn.dataset.tier, true); });
+      });
+      document.getElementById("print-btn").addEventListener("click", function () { window.print(); });
+      document.getElementById("copy-btn").addEventListener("click", function () {
+        copyText(lastCopy).then(function (ok) {
+          document.getElementById("copy-status").textContent = ok ? "已复制文字稿。" : "复制失败，请在报价单上手工选择。";
+        });
+      });
+      applyTier("low", false);
+    }
+
+    init();
+  </script>
+</body>
+</html>
